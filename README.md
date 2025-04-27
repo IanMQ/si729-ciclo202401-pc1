@@ -98,7 +98,7 @@ TypeScript.
 Por lo que comenzaremos creando un proyecto nuevo en WebStorm, seleccionando la opción de 
 Angular y TypeScript.
 
-[New Project](guide_assets/ss1_newproject.PNG)
+[Vista de New Project](guide_assets/ss1_newproject.PNG)
 
 Con el proyecto creado, procederemos a instalar Angular Material. Para ello, abrimos la 
 terminal de WebStorm y ejecutamos el siguiente comando:
