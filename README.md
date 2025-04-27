@@ -98,7 +98,7 @@ TypeScript.
 Por lo que comenzaremos creando un proyecto nuevo en WebStorm, seleccionando la opción de 
 Angular y TypeScript.
 
-[Vista de New Project](guide_assets/ss1_newproject.PNG)
+<img src="guide_assets/ss1_newproject.PNG" alt="">
 
 Con el proyecto creado, procederemos a instalar Angular Material. Para ello, abrimos la 
 terminal de WebStorm y ejecutamos el siguiente comando:
@@ -182,7 +182,7 @@ imports: [RouterOutlet, HeaderComponent, FooterComponent]
 
 Con los componentes conectados, solo quedaría darle un diseño a ambos componentes.
 
-[Vista de Header & Footer](guide_assets/ss2_header&footer.PNG)
+<img src="guide_assets/ss2_header&footer.PNG" alt="">
 
 Para conseguir este resultado se modificaron:
 
