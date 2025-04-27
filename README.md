@@ -1,59 +1,76 @@
-# Si729Ciclo202401Pc1
+# Guía de Desarrollo para la PC1 de Open Source (SI729)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+## Indice
+   
+  - [Enunciado : Caso HATCHSQUARE Technologies LLC.](#enunciado-)
+  - [Restricciones técnicas:](#restricciones-técnicas)
+    - [Requirimientos del Equipo](#requirimientos-del-equipo)
+    - [Fuera del alcance](#fuera-del-alcance-)
+    - [Referencias](#referencias-)
 
-## Development server
 
-To start a local development server, run:
+## Enunciado 
 
-```bash
-ng serve
-```
+Caso HATCHSQUARE Technologies LLC.  
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Su cliente, Hatchsquare Technologies, LLC. Desea promover el uso de su plataforma 
+Calendarific (https://calendarific.com/), un RESTful API de alcance mundial, fácil de 
+usar para desarrolladores que brinda acceso a celebraciones y días festivos públicos, 
+locales y bancarios; abarca más de 230 países, más de 3300 estados y más de 100 idiomas.   
 
-## Code scaffolding
+Para ello, le solicita elaborar una aplicación web que obtenga la información de los países 
+(countries) para los posee información, accediendo 
+al endpoint:  https://calendarific.com/api/v2/countries  
+La documentación del API se encuentra en: https://calendarific.com/api-documentation  
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Para el desarrollo web de lado web frontend, se ha seleccionado TypeScript como lenguaje de 
+programación y Angular como Frontend Framework.  Se le encarga el desarrollo de una 
+aplicación web que implemente las siguientes características: 
 
-```bash
-ng generate component component-name
-```
+- La aplicación debe presentar en la parte superior un Toolbar, 
+con el título “Supported Countries” 
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- La aplicación debe presentar como vista por defecto un conjunto de cards donde para 
+cada card presente la información disponible para el país (country), incluyendo 
+country name, iso-3166, total holidays, supported languages, uuid, flag unicode.  
 
-```bash
-ng generate --help
-```
+- La aplicación debe presentar en la parte inferior, una sección de footer con la 
+información “Copyright © 2024 HATCHSQUARE Technologies LLC, All rights reserved.” 
+en la primera línea. Además debe incluir en la segunda línea del footer la 
+información “Developed by“ y los datos del Developer (considérese 
+a usted como autor, indicando código, nombre y apellido.)
 
-## Building
+El equipo de IT de su cliente tomará en cuenta no sólo el cumplimiento de las 
+características funcionales, sino el diseño de interfaz de usuario, así como la 
+estructura del proyecto, aplicación de convenciones de nomenclatura de objetos de 
+programación en inglés, convenciones de nomenclatura de Angular, organización y 
+eficiencia del código. Igualmente se tomará en cuenta la aplicación de patrones 
+de diseño. Se toma en cuenta accessibility (imágenes con texto alternativo, uso de 
+ARIA attributes) y usability. 
 
-To build the project run:
+## Restricciones técnicas:
 
-```bash
-ng build
-```
+### Requirimientos del Equipo:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Interfaz de usuario basada en Angular Material, mientras que para la 
+comunicación con el backend debe apoyarse en HttpClient 
+(incluido en @angular/common/http). 
+- Debe incluir ARIA atributes en las vistas. 
+- La interfaz de usuario debe mostrar los textos en inglés. 
+- El proyecto de aplicación debe poder aperturarse sin problemas en JetBrains WebStorm.
 
-## Running unit tests
+### Fuera del alcance: 
+- Sidebar 
+- Internationalization 
+- Routing 
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Referencias: 
+- https://calendarific.com/  
+- https://angular.io/guide/http 
+- https://material.angular.io/components/toolbar/overview  
+- https://material.angular.io/components/toolbar/overview#accessibility 
+- https://material.angular.io/components/grid-list/overview 
+- https://material.angular.io/components/grid-list/overview#accessibility 
+- https://material.angular.io/components/card/overview 
+- https://material.angular.io/components/card/overview#accessibility  
+- https://www.w3.org/TR/wai-aria/#usage   
