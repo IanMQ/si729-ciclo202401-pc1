@@ -16,7 +16,7 @@ main {
 }
 
 app-footer {
-  position: fixed;
+  position: sticky; /* Cambia a sticky para que el footer se mantenga en la parte inferior */
   bottom: 0;
   left: 0;
   width: 100%;

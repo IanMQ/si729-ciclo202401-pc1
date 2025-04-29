@@ -1,0 +1,9 @@
+<div class="cards-container">
+  <div class="card" *ngFor="let country of data">
+    <h2>{{ country.country_name }} ({{ country.iso_3166 }})</h2>
+    <p><strong>Total Holidays:</strong> {{ country.total_holidays }}</p>
+    <p><strong>Supported Languages:</strong> {{ country.supported_languages }}</p>
+    <p><strong>UUID:</strong> {{ country.uuid }}</p>
+    <p><strong>Flag:</strong> {{ country.flag_unicode }}</p>
+  </div>
+</div>

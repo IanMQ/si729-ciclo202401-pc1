@@ -9,6 +9,11 @@
     - [Referencias](#referencias-)
     - [Calificación](#calificación)
   - [Guía de Desarrollo:](#guía-de-desarrollo)
+    - [Primeros pasos](#primeros-pasos)
+    - [Orden de Carpetas](#orden-de-carpetas)
+    - [Creación de Componentes](#creación-de-componentes)
+      - [Header y Footer](#header-y-footer-)
+      - [Countries](#countries)      
 
 
 ## Enunciado 
@@ -196,6 +201,297 @@ footer.component.css
 app.component.html
 app.component.css
 ```
+### Countries
+
+Para trabajar con la sección Countries, necesitamos establecer ota division en las carpetas.
+
+```
+src
+├── app
+│   ├── countries
+│   │   ├── components
+│   │   ├── entities
+│   │   └── services
+...    
+└── enviroments  
+```
+
+comenzamos por entender la estructura de la API, para ello nos dirigimos a la documentación de la API y
+revisamos el endpoint de countries. 
+```bash
+https://calendarific.com/api-documentation
+```
+Para nuestro caso, obtendremos nuestar apikey y usaremos el siguiente endpoint
+```bash
+https://calendarific.com/api/v2/countries?api_key=baa9dc110aa712sd3a9fa2a3dwb6c01d4c875950dc32vs
+```
+con esto nos vamos a la carpeta enviroments y creamos un archivo llamado `enviroment.ts` dentro de
+el agregamos lo siguiente:
+
+```typescript
+export const enviroment = {
+  production: false,
+  api: 'https://calendarific.com/api/v2/countries?api_key=nSOeTmlyh7Gy7Jygj4yQZyyj348LWz70'
+}
+```
+
+Con esto listo deberiamos darle un vistazo a la estructura en la que viene la información
+proveniente de este endpoint:
+
+```json
+{
+  "meta": {
+    "code": 200    
+  },
+  "response": {
+    "url": "https://calendarific.com/supported-countries",
+    "countries": [
+      {
+        "country_name": "Afghanistan",
+        "iso-3166": "AF",
+        "total_holidays": 24,
+        "supported_languages": 2,
+        "uuid": "f0357a3f154bc2ffe2bff55055457068",
+        "flag_unicode": "🇦🇫"
+      }
+    ]
+  }
+}
+```
+Luego de tener una idea de la estructura de la API, creamos un servicio para poder
+obtener la información de los países. Para ello, nos dirigimos a la carpeta `services` y
+creamos un archivo llamado `countries.service.ts` y dentro de este agregamos lo siguiente:
+
+```
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { enviroment } from 'src/environments/enviroment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CountriesService {
+  private apiUrl = enviroment.api;
+
+  constructor(private http: HttpClient) { }
+
+  getCountries() {
+    return this.http.get<any>(this.apiUrl);
+  }
+}
+```
+
+con esto listo, creamos un archivo dentro de services llamado `countries.service.spec.ts` 
+y dentro de este agregamos lo siguiente:
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import {CountriesService} from './countries.service';
+
+describe('CountriesService', () => {
+  let service: CountriesService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(CountriesService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});
+```
+Para finalizar con el desarrollo de la sección services, necesitamos habilitar el modulo de HttpClient,
+para eso nos dirijimos a `app.config.ts` y dentro de este agregamos lo siguiente:
+
+```
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes';
+import { HttpClientModule} from '@angular/common/http';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    importProvidersFrom(HttpClientModule) // Agregar esta línea
+  ]
+};
+```
+
+Con un servicio que nos permita extraer la información de la API, ahora creamos un
+entity para poder manejar la información de los países. Para ello, nos dirigimos a la
+carpeta `entities` y creamos un archivo llamado `country.entity.ts` y dentro de este:
+
+Para este caso tenemos una versión simplificada de la entidad que funciona si los atributos
+son los mismos que los de la API. Lo llamaremos V1 :
+
+```typescript
+export class Country {
+  country_name: string;
+  iso_3166: string;
+  total_holidays: number;
+  supported_languages: number;
+  uuid: string;
+  flag_unicode: string;
+}
+```
+Para nuestro caso usaremos una versión más compleja de la entidad, que nos permite 
+manejar la información de los países de una forma más flexible y adecuada a la api con la
+que trabajamos. Lo llamaremos V2 :
+
+```typescript
+export class Country {
+  country_name: string;
+  iso_3166: string;
+  total_holidays: number;
+  supported_languages: number;
+  uuid: string;
+  flag_unicode: string;
+
+  constructor(
+    country_name: string = "",
+    iso_3166: string = "",
+    total_holidays: number = 0,
+    supported_languages: number = 0,
+    uuid: string = "",
+    flag_unicode: string = ""
+  ) {
+    this.country_name = country_name;
+    this.iso_3166 = iso_3166;
+    this.total_holidays = total_holidays;
+    this.supported_languages = supported_languages;
+    this.uuid = uuid;
+    this.flag_unicode = flag_unicode;
+  }
+
+  // Método estático para mapear un objeto JSON a una instancia de Country
+  static fromJson(json: any): Country {
+    return new Country(
+      json["country_name"] || "",
+      json["iso-3166"] || "", //Esta versión considera que el campo puede venir con guiones
+      json["total_holidays"] || 0,
+      json["supported_languages"] || 0,
+      json["uuid"] || "",
+      json["flag_unicode"] || ""
+    );
+  }
+}
+```
+
+Por ultimo faltaria crear un componente para poder mostrar la información de los países.
+Para ello, nos dirigimos a la carpeta `components` y creamos un componente de la siguiente forma:
+
+```bash
+>selecionamos la carpeta countries/components
+ng g c country-cards
+```
+
+Comenzamos por establecer la estructura del componente, asi que nos dirigimos a
+`country-cards.component.ts` y dentro de este agregamos lo siguiente:
+
+Este sería la estructura básica del componente que trabaja con la V1 de la entidad:
+
+```
+import {Component, OnInit} from '@angular/core';
+import {CountriesService} from '../../services/countries.service';
+import {DecimalPipe, NgForOf} from '@angular/common';
+import {Country} from '../../entities/country.entity';
+
+@Component({
+  selector: 'app-country-cards',
+  templateUrl: './country-cards.component.html',
+  imports: [
+    DecimalPipe,
+    NgForOf
+  ],
+  standalone: true,
+  styleUrl: './country-cards.component.css'
+})
+export class CountryCardsComponent implements OnInit {
+  data: Country[] = [];
+
+  constructor(private countriesService: CountriesService) {}
+
+  ngOnInit() {
+    this.getCountries();
+  }
+
+  private getCountries() {
+    this.countriesService.getCountries().subscribe(
+      (result ) => {
+        this.data = result.response.countries;
+      },
+      (error) => {
+        console.error('Error fetching countries:', error);
+      }
+    );
+  }
+}
+}
+```
+Para trabajar con la V2 de la entidad tendriamos que hacer un ligero cambio dentro del componente:
+```
+private getCountries() {
+    this.countriesService.getCountries().subscribe(
+      (result ) => {
+        this.data = result.response.countries.map((json: any) => Country.fromJson(json));
+      },
+      (error) => {
+        console.error('Error fetching countries:', error);
+      }
+    );
+    }
+```
+Con esto listo, ahora nos dirigimos a `country-cards.component.html` y dentro de este
+agregamos lo siguiente:
+
+```
+<div class="cards-container">
+  <div class="card" *ngFor="let country of data">
+    <h2>{{ country.country_name }} ({{ country.iso_3166 }})</h2>
+    <p><strong>Total Holidays:</strong> {{ country.total_holidays }}</p>
+    <p><strong>Supported Languages:</strong> {{ country.supported_languages }}</p>
+    <p><strong>UUID:</strong> {{ country.uuid }}</p>
+    <p><strong>Flag:</strong> {{ country.flag_unicode }}</p>
+  </div>
+</div>
+```
+Los estilos para el componente se encuentran dentro de `country-cards.component.css` y esos
+van a discreción del desarrollador, pero para conseguir un resultado similar al de la imagen
+se recomienda usar lo siguiente:
+
+```
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+}
+
+.card p {
+  margin: 4px 0;
+}
+```
+
+
+
+
+
 
 
 
