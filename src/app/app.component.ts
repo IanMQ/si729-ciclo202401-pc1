@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import {HeaderComponent} from './public/header/header.component';
 import {FooterComponent} from './public/footer/footer.component';
 import {CountryCardsComponent} from './countries/components/country-cards/country-cards.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -13,4 +14,9 @@ import {CountryCardsComponent} from './countries/components/country-cards/countr
 })
 export class AppComponent {
   title = 'si729-ciclo202401-pc1';
+
+  constructor(translate: TranslateService) {
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
 }

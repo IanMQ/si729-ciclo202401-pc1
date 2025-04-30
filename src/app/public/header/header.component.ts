@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import {MatToolbar} from '@angular/material/toolbar';
+import {LanguageSelectorComponent} from '../language-selector/language-selector.component';
 
 @Component({
   selector: 'app-header',
   imports: [
-    MatToolbar
+    MatToolbar,
+    LanguageSelectorComponent
   ],
   templateUrl: './header.component.html',
   standalone: true,

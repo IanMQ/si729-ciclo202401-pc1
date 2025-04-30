@@ -13,7 +13,10 @@
     - [Orden de Carpetas](#orden-de-carpetas)
     - [Creación de Componentes](#creación-de-componentes)
       - [Header y Footer](#header-y-footer-)
-      - [Countries](#countries)      
+      - [Countries Services](#countries-services)
+      - [Countries Entity](#countries-entity)
+      - [Countries Component](#countries-component)
+  - [Correción de errores](#correción-de-errores)
 
 
 ## Enunciado 
@@ -191,17 +194,110 @@ Con los componentes conectados, solo quedaría darle un diseño a ambos componen
 
 Para conseguir este resultado se modificaron:
 
-```
-header.component.html
-header.component.css
+```html
+[ header.component.html ]
 
-footer.component.html
-footer.component.css
-
-app.component.html
-app.component.css
+<mat-toolbar color="primary">
+  <span>Supported Countries</span>
+</mat-toolbar>
 ```
-### Countries
+```
+[ header.component.css  ]
+
+mat-toolbar {
+background-color: #2c3e50; /* Mismo color de fondo que el footer */
+color: #ecf0f1; /* Mismo color de texto que el footer */
+font-size: 20px;
+font-weight: bold;
+justify-content: center;
+}
+```
+
+```html
+[ footer.component.html ]
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>
+      Copyright &copy; 2024 HATCHSQUARE Technologies LLC, All Rights Reserved
+    </p>
+    <p class="footer-copyright">Developed by U202121325 Ian MQ</p>
+  </div>
+</footer>
+```
+```
+[ footer.component.css ]
+.footer {
+background-color: #2c3e50;
+color: #ecf0f1;
+padding: 20px 0;
+text-align: center;
+}
+
+.footer-content {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 15px;
+}
+
+.footer-nav {
+margin-bottom: 10px;
+}
+
+.footer-nav a {
+color: #ecf0f1;
+text-decoration: none;
+margin: 0 10px;
+font-size: 14px;
+}
+
+.footer-nav a:hover {
+text-decoration: underline;
+}
+
+.footer-copyright {
+font-size: 12px;
+margin-top: 10px;
+}
+```
+
+```html
+[ app.component.html ]
+
+<app-header></app-header>
+<main>
+  
+</main>
+<app-footer></app-footer>
+```
+```
+[ app.component.css ]
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+main {
+  flex: 1; /* Hace que el contenido principal ocupe el espacio restante */
+}
+
+app-footer {
+  position: sticky; /* Cambia a sticky para que el footer se mantenga en la parte inferior */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center; /* Centra el contenido del footer */
+}
+```
+### Countries Services
 
 Para trabajar con la sección Countries, necesitamos establecer ota division en las carpetas.
 
@@ -320,6 +416,8 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
+### Countries Entity
+
 Con un servicio que nos permita extraer la información de la API, ahora creamos un
 entity para poder manejar la información de los países. Para ello, nos dirigimos a la
 carpeta `entities` y creamos un archivo llamado `country.entity.ts` y dentro de este:
@@ -379,6 +477,7 @@ export class Country {
   }
 }
 ```
+### Countries Component
 
 Por ultimo faltaria crear un componente para poder mostrar la información de los países.
 Para ello, nos dirigimos a la carpeta `components` y creamos un componente de la siguiente forma:
@@ -462,6 +561,8 @@ Los estilos para el componente se encuentran dentro de `country-cards.component.
 van a discreción del desarrollador, pero para conseguir un resultado similar al de la imagen
 se recomienda usar lo siguiente:
 
+<img src="guide_assets/ss3_comp_countries.PNG" alt="">
+
 ```
 .cards-container {
   display: flex;
@@ -487,9 +588,207 @@ se recomienda usar lo siguiente:
   margin: 4px 0;
 }
 ```
+Por ultimo tendriamo que agregar nuestro componente dentro de `app.component.html` para que
+pueda ser visualizado, por lo que nos dirigimos a `app.component.html` y dentro de este
+agregamos lo siguiente:
+
+```
+<app-header></app-header>
+<main>
+  <app-country-cards></app-country-cards>
+</main>
+<app-footer></app-footer>
+```
+
+Con esto listo ya tendríamos una aplicación funcional que muestra la información de los países
+soportados por la API de Calendarific.
+
+Debido a que este es un examen del año pasado y no cuento con un profesor que lo califique, no puedo
+asegurar que la calificación sea correcta. Sin embargo, he seguido las instrucciones y he tratado de
+hacerlo lo mejor posible. Si tienes alguna duda o necesitas ayuda, no dudes en preguntar. Aunque no
+pienso si al menos tener una calificación, por lo que, asistido por la IA, he llegado a la siguiente
+calificación:
+
+| **Criterio de Calificación**  | **Puntaje Estimado** | **Comentarios**                                                                                                                                                                               |
+|-------------------------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **C01. Building y ejecución** | **2.0/2.0**          | El proyecto parece estar correctamente configurado y funcional, con instrucciones claras para la instalación y ejecución.                                                                     |
+| **C02. User Interface**       | **2.5/3.0**          | La interfaz cumple con los requisitos básicos, pero podría mejorar en términos de diseño responsivo y accesibilidad (uso de ARIA attributes).                                                 |
+| **C03. Features**             | **6.5/7.0**          | Se cumplen los requisitos funcionales principales, pero se podría mejorar la validación de datos y la gestión de errores en el servicio.                                                      |
+| **C04. Code Organization**    | **2.5/3.0**          | La organización del código es buena, pero podría beneficiarse de una mayor separación de responsabilidades y modularidad en algunos componentes.                                              |
+| **C05. Code Quality**         | **2.5/3.0**          | El código es claro y sigue buenas prácticas, pero podría incluir más comentarios, pruebas unitarias adicionales y validaciones en el constructor o método `fromJson` de la entidad `Country`. |
+| **C06. Naming Standards**     | **2.0/2.0**          | Los nombres de clases, métodos y variables están en inglés y siguen las convenciones de nomenclatura estándar.                                                                                |
+
+**Puntaje Total Estimado: 18.0/20.0**
+
+| **Área de Mejora**                        | **Descripción**                                                                                                                                                                          |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Accesibilidad (C02)**                   | Agregar atributos ARIA en los componentes, como en los botones, encabezados y elementos interactivos. Asegurarse de que las imágenes tengan texto alternativo (`alt`).                   |
+| **Diseño Responsivo (C02)**               | Mejorar el diseño para dispositivos móviles utilizando Angular Material Grid o Flex Layout. Asegurarse de que las tarjetas se ajusten correctamente en pantallas pequeñas.               |
+| **Gestión de Errores (C03)**              | Implementar mensajes de error más detallados en el componente `CountryCardsComponent` para manejar fallos en la API. Mostrar un mensaje amigable al usuario si no hay datos disponibles. |
+| **Validación de Datos (C05)**             | Agregar validaciones en el constructor o método `fromJson` de la clase `Country` para garantizar que los datos sean válidos antes de asignarlos.                                         |
+| **Pruebas Unitarias (C05)**               | Incluir pruebas unitarias para el componente `CountryCardsComponent` y la clase `Country` para verificar que los datos se procesen correctamente.                                        |
+| **Separación de Responsabilidades (C04)** | Dividir la lógica de transformación de datos (como `fromJson`) en un servicio separado para mantener la entidad más limpia.                                                              |
 
 
+## Correción de errores
 
+Header Component
+   En el archivo header.component.html, agrega un atributo aria-label al mat-toolbar para describir su propósito.
+```
+<mat-toolbar color="primary" aria-label="Supported Countries Toolbar">
+  <span>Supported Countries</span>
+</mat-toolbar>
+```
+Country Cards Component
+   En el archivo country-cards.component.html, agrega atributos ARIA y texto alternativo para mejorar la accesibilidad:
+   Usa aria-labelledby para asociar el encabezado (h2) con el contenido de la tarjeta.
+   Si incluyes imágenes en las tarjetas, asegúrate de usar el atributo alt para describirlas.
+```
+<div class="cards-container">
+  <div class="card" *ngFor="let country of data" role="region" aria-labelledby="country-{{ country.iso_3166 }}">
+    <h2 id="country-{{ country.iso_3166 }}">{{ country.country_name }} ({{ country.iso_3166 }})</h2>
+    <p><strong>Total Holidays:</strong> {{ country.total_holidays }}</p>
+    <p><strong>Supported Languages:</strong> {{ country.supported_languages }}</p>
+    <p><strong>UUID:</strong> {{ country.uuid }}</p>
+    <p><strong>Flag:</strong> <span role="img" aria-label="Flag of {{ country.country_name }}">{{ country.flag_unicode }}</span></p>
+  </div>
+</div>
+```
+
+Footer Component
+   En el archivo footer.component.html, agrega un atributo aria-label para describir el propósito del pie de página.
+```
+<footer class="footer" aria-label="Footer with copyright and developer information">
+  <div class="footer-content">
+    <p>
+      Copyright &copy; 2024 HATCHSQUARE Technologies LLC, All Rights Reserved
+    </p>
+    <p class="footer-copyright">Developed by U202121325 Ian MQ</p>
+  </div>
+</footer>
+```
+
+Imágenes (si las usas)
+Si en algún componente incluyes imágenes, asegúrate de usar el atributo alt para describirlas. Por ejemplo:
+
+```
+<img src="path-to-image.jpg" alt="Description of the image">
+```
+
+## Cambiar idioma
+
+Para cambiar el idioma de la aplicación, puedes usar Angular i18n o una biblioteca como ngx-translate. 
+Aquí hay un ejemplo básico de cómo hacerlo:
+
+Primero instala ngx-translate:
+```bash
+npm install @ngx-translate/core @ngx-translate/http-loader
+```
+
+Con esto listo, puedes configurar ngx-translate en tu aplicación. Para ello creamos una carpeta donde iran
+los archivos de traducción, por ejemplo `public/i18n/` y dentro de esta creamos dos archivos 
+`en.json` y `es.json`. 
+
+```
+project
+├── public
+│   ├── i18n
+│   │   ├── en.json
+│   │   └── es.json
+...    
+└── src
+```
+Ahora nos diirjimos a `app.conifg.ts` y dentro de este agregamos lo siguiente:
+
+```
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes';
+import {HttpClient, HttpClientModule, provideHttpClient} from '@angular/common/http';
+import {provideTranslateService, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+const httpLoaderFactory: (http: HttpClient) =>
+  TranslateLoader = (http: HttpClient) =>
+  new TranslateHttpLoader(http, './i18n/', '.json');
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    importProvidersFrom(HttpClientModule),
+
+    provideHttpClient(),
+    provideTranslateService({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'en',
+    })
+  ]
+};
+```
+Una vez configurado, para poder usar el servicio de traducción debemos importarlo en el componente
+`app.component.ts` y dentro de este agregar lo siguiente:
+
+```
+export class AppComponent {
+  title = 'si729-ciclo202401-pc1';
+
+  constructor(translate: TranslateService) {
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
+}
+```
+Con esto listo, ahora podemos usar el servicio de traducción en cualquier componente. Claro que para
+cambiar el idioma de la aplicación, debemos agregar un selector para que el usuario pueda elegir el idioma
+que desea usar. Para ello, creamos un nuevo componente llamado `language-selector` y dentro de este
+agregamos lo siguiente:
+
+```bash
+>selecionamos la carpeta app/public/
+ng g c language-selector
+```
+Despues de crearlo, nos dirigimos a `language-selector.component.ts` y dentro de este agregamos lo siguiente:
+```
+import { Component } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+
+@Component({
+  selector: 'app-language-selector',
+  imports: [],
+  templateUrl: './language-selector.component.html',
+  standalone: true,
+  styleUrl: './language-selector.component.css'
+})
+export class LanguageSelectorComponent {
+  currentLang: string = 'en';
+  languages: string[] = ['en', 'es'];
+
+  constructor(private translateService: TranslateService) {
+    this.currentLang = this.translateService.currentLang;
+  }
+
+  useLanguage(language: string): void {
+    this.translateService.use(language);
+  }
+
+}
+```
+
+Luego nos dirigimos a `language-selector.component.html` y dentro de este agregamos lo siguiente:
+```
+<div class="language-selector">
+  <label for="language-select">Select Language:</label>
+  <select id="language-select" [(ngModel)]="currentLang" (change)="useLanguage(currentLang)">
+    <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+  </select>
+</div>
+```
 
 
 
